@@ -12,7 +12,7 @@ export default function CardList() {
     return (
         <StyledCardList>
            {
-               consumer.currentMovies?.map((movie,i) => <Card key = {i} title={movie.title} src = {consumer.baseImageUrl + movie.poster_path} />)
+               consumer.movieData?.results?.map((movie,i) => <Card key = {i} title={movie.title} src = {consumer.baseImageUrl + movie.poster_path} />)
            }
         </StyledCardList>
     )

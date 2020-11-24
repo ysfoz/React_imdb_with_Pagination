@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState, createContext } from 'react';
 import {apiKey} from './ApiKey'
-// import Pagination from './components/Pagination'
+import Pagination from './components/Pagination/Pagination.index'
 
 
 // import SearchBar from './components/SearchBar/SearchBar.index'
@@ -17,8 +17,8 @@ export const MovieContext  = createContext();
 function App() {
 const [movieData,setMovieData] = useState([]);
 const [loading,setLoading] = useState(false);
-const [currentPage,setCurrentPage] = useState(1);
-const [moviesPerPage,setMoviesPerPage] = useState(10);
+const [currentPage,setCurrentPage] = useState();
+
 
   async function getData() {
     setLoading(true) // hata verirse bunu kontrol et
@@ -26,7 +26,7 @@ const [moviesPerPage,setMoviesPerPage] = useState(10);
       const {data} = await axios.get(baseUrl,{
         params:{
           api_key:apiKey,
-          page:1,
+          page:currentPage,
           query:'lord'
         } 
       }) 
@@ -36,21 +36,22 @@ const [moviesPerPage,setMoviesPerPage] = useState(10);
       console.log(error)
     }
   };
-  useEffect(() => getData(),[])
+  useEffect(() => getData(),[currentPage])
 
-  const indexOfLastMovie = currentPage * moviesPerPage;
-  const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
-  const currentMovies = movieData?.results?.slice(indexOfFirstMovie,indexOfLastMovie)
+  
  
 console.log(movieData)
+
+const paginate = number => setCurrentPage(number + 1)
+console.log('current',currentPage)
 
 
   return (
     <div>
-      <MovieContext.Provider value={{ movieData, baseImageUrl,loading,currentMovies, }}>
+      <MovieContext.Provider value={{ movieData, baseImageUrl,loading }}>
           {/* <SearchBar/> */}
           <CardList />
-          {/* <Pagination moviesPerPage = {moviesPerPage} totalMovies = {movieData.length}/> */}
+          <Pagination paginate={paginate}/>
       </MovieContext.Provider>
     </div>
   );
