@@ -1,17 +1,19 @@
 import Card from '../Card/Card.index';
 import { useContext } from 'react';
 import {MovieContext} from '../../App';
-import './CardList.style.scss'
+import {StyledCardList} from "./CardList.style"
 
 export default function CardList() {
     const consumer = useContext(MovieContext)
-    // console.log("🚀 ~ file: CardList.index.js ~ line 7 ~ CardList ~ baseImageUrl", baseImageUrl)
-    console.log(consumer.movieData)
+    if (consumer.loading){
+        return <h2>Loading. . . </h2>
+    }
+    
     return (
-        <div>
+        <StyledCardList>
            {
-               consumer.movieData.map((movie,i) => <Card key = {i} title={movie.title} src = {consumer.baseImageUrl + movie.poster_path} />)
+               consumer.currentMovies?.map((movie,i) => <Card key = {i} title={movie.title} src = {consumer.baseImageUrl + movie.poster_path} />)
            }
-        </div>
+        </StyledCardList>
     )
 }

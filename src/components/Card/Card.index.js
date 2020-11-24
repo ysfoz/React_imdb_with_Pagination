@@ -1,10 +1,12 @@
-import './Card.style.scss'
+import {StyledCardWrapper, StyledText, StyledMovieImage} from "./Card.style"
 
 export default function Card(props) {
     return(
-        <div>
-            <img src = {props.src}/>
-            <p>{props.title}</p>
-        </div>
+        <StyledCardWrapper>
+            <StyledMovieImage src = {props.src}/>
+
+            <StyledText>{props.title}</StyledText>
+        </StyledCardWrapper>
 )    
 }
+
