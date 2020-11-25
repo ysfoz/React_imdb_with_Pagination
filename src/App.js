@@ -4,7 +4,7 @@ import {apiKey} from './ApiKey'
 import Pagination from './components/Pagination/Pagination.index'
 
 
-// import SearchBar from './components/SearchBar/SearchBar.index'
+import SearchBar from './components/SearchBar/SearchBar.index'
 
 import CardList from './components/cardList/CardList.index'
 
@@ -18,8 +18,9 @@ function App() {
 const [movieData,setMovieData] = useState([]);
 const [loading,setLoading] = useState(false);
 const [currentPage,setCurrentPage] = useState();
+const [searchKeyword,setSearchKeyword] = useState('')
 
-
+console.log('keyword',searchKeyword)
   async function getData() {
     setLoading(true) // hata verirse bunu kontrol et
     try {
@@ -27,7 +28,7 @@ const [currentPage,setCurrentPage] = useState();
         params:{
           api_key:apiKey,
           page:currentPage,
-          query:'lord'
+          query:searchKeyword || 'life'
         } 
       }) 
         setMovieData(data)
@@ -36,7 +37,7 @@ const [currentPage,setCurrentPage] = useState();
       console.log(error)
     }
   };
-  useEffect(() => getData(),[currentPage])
+  useEffect(() => getData(),[currentPage,searchKeyword])
 
   
  
@@ -45,11 +46,14 @@ console.log(movieData)
 const paginate = number => setCurrentPage(number + 1)
 console.log('current',currentPage)
 
-
+const SearchMovie = val => {
+  console.log(val)
+  setSearchKeyword(val)
+}
   return (
     <div>
       <MovieContext.Provider value={{ movieData, baseImageUrl,loading }}>
-          {/* <SearchBar/> */}
+          <SearchBar SearchMovie = {SearchMovie}/>
           <CardList />
           <Pagination paginate={paginate}/>
       </MovieContext.Provider>
